@@ -42,3 +42,19 @@ class Game:
 
     def is_game_possible(self):
         return all(extraction.is_valid for extraction in self.extractions)
+
+
+def main():
+    with open('puzzle_input.txt') as puzzle_input:
+        rows = puzzle_input.readlines()
+        valid_games = []
+        for row in rows:
+            game = Game.from_raw_line(row.replace("\n", ""))
+            if game.is_game_possible():
+                valid_games.append(int(game.id))
+        result = sum(valid_games)
+        print(f"The result of the day 2 of aoc 2023 is {result}")
+
+
+if __name__ == '__main__':
+    main()
