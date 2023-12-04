@@ -40,11 +40,30 @@ class Game:
         extractions = [Extraction.from_raw_string(extraction) for extraction in extractions]
         return cls(id_, extractions)
 
+    def get_max_extraction(self):
+        max_extraction = {
+                "blue": 0,
+                "green": 0,
+                "red": 0
+            }
+        for extraction in self.extractions:
+            for key, value in extraction.extraction.items():
+                if value > max_extraction[key]:
+                    max_extraction[key] = value
+        return max_extraction
+
+    def get_power(self):
+        max_extraction = self.get_max_extraction()
+        result = 1
+        for value in max_extraction.values():
+            result *= value
+        return result
+
     def is_game_possible(self):
         return all(extraction.is_valid for extraction in self.extractions)
 
 
-def main():
+def main_part_1():
     with open('puzzle_input.txt') as puzzle_input:
         rows = puzzle_input.readlines()
         valid_games = []
@@ -56,5 +75,16 @@ def main():
         print(f"The result of the day 2 of aoc 2023 is {result}")
 
 
+def main_part_2():
+    with open('puzzle_input.txt') as puzzle_input:
+        rows = puzzle_input.readlines()
+        power_games = []
+        for row in rows:
+            game = Game.from_raw_line(row.replace("\n", ""))
+            power_games.append(game.get_power())
+        result = sum(power_games)
+        print(f"The result of the day 2 of aoc 2023 is {result}")
+
+
 if __name__ == '__main__':
-    main()
+    main_part_2()
